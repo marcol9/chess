@@ -41,10 +41,12 @@ app.use("/login", authLimiter);
 import authRouter from "./routers/authRouter.js"; // login/signup router
 app.use(authRouter);
 
+import gameRouter from "./routers/gameRouter.js";
+app.use(gameRouter)
 
 import { authenticateUser, checkIfAdmin } from "./public/auth.js"; //auth functions
 
 
-app.listen(process.env.PORT, () => {
-  console.log("Server is running on: ", process.env.PORT);
+app.listen(8080, () => {
+  console.log("Server is running on: ", 8080);
 });
