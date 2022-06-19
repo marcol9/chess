@@ -7,6 +7,19 @@
     let columns = [];
     let step; 
 
+    
+    onMount(()=>{
+        if(color === 'W'){
+           columns = ['a','b','c','d','e','f','g','h'];
+           step = 8;
+        }
+        if(color === 'B'){
+            columns = ['h','g','f','e','d','c','b','a'];
+            step = -1;
+        }
+
+    });
+
     function handleMove(move){
         if(data.from===null){
             data.from = move;
@@ -35,17 +48,6 @@
         return "black"
     }
 
-    onMount(()=>{
-        if(color === 'W'){
-           columns = ['a','b','c','d','e','f','g','h'];
-           step = 8;
-        }
-        if(color === 'B'){
-            columns = ['h','g','f','e','d','c','b','a'];
-            step = -1;
-        }
-
-    });
 </script>
 
 <div class="board">

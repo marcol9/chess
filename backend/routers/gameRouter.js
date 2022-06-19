@@ -2,14 +2,14 @@ import { json, Router } from "express";
 const router = Router();
 import { Chess } from 'chess.js'
 
-const chess = new Chess()
+const chess = new Chess();
 
 
 router.post("/move", async(req,res)=>{
     const move = chess.move(req.body)
     console.log(chess.ascii());
     if(move===null){
-        res.send({undefined})
+        res.send({message:"Invalid move"});
         return
     }
     const response={
