@@ -1,12 +1,14 @@
 <script>
   import { onMount } from "svelte";
   import NavBar from "./components/NavBar.svelte";
+  import Chessboard from "./components/Chessboard.svelte";
   import { apiurl } from "./constants/apiurl";
   import { loggedin } from "./store/loggedin";
 
   let username = "";
   let role = "";
   let ok = false;
+  let color = 'B';
 
   onMount(() => {
     fetch(apiurl + "/user", {
@@ -35,5 +37,5 @@
 </script>
 
 <main>
-  <NavBar {username} {role} />
+  <Chessboard {color}/>
 </main>

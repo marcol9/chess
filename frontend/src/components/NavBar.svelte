@@ -128,10 +128,4 @@
   .nav-link {
     margin-bottom: 0px;
   }
-  .cart {
-    padding-top: 4px;
-    padding-right: 4px;
-    padding-bottom: 4px;
-    padding-left: 4px;
-  }
 </style>

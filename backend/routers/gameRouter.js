@@ -6,8 +6,6 @@ const chess = new Chess()
 
 
 router.post("/move", async(req,res)=>{
-    const from = req.body.from;
-    const to = req.body.to;
     const move = chess.move(req.body)
     console.log(chess.ascii());
     if(move===null){
@@ -15,6 +13,8 @@ router.post("/move", async(req,res)=>{
         return
     }
     const response={
+        from: move.from,
+        to: move.to,
         inCheck: chess.in_check(),
         inCheckmate: chess.in_checkmate(),
         inStalemate: chess.in_stalemate(),
@@ -23,7 +23,7 @@ router.post("/move", async(req,res)=>{
         insMaterial: chess.insufficient_material(),
         flags: move.flags
     }
-    res.send(move);
+    res.send(response);
 });
 
 export default router;

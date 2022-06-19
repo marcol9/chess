@@ -47,6 +47,6 @@ app.use(gameRouter)
 import { authenticateUser, checkIfAdmin } from "./public/auth.js"; //auth functions
 
 
-app.listen(8080, () => {
-  console.log("Server is running on: ", 8080);
+app.listen(3000, () => {
+  console.log("Server is running on: ", 3000);
 });
