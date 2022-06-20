@@ -8,7 +8,7 @@
   let username = "";
   let role = "";
   let ok = false;
-  let color = 'B';
+  let color = 'W';
 
   onMount(() => {
     fetch(apiurl + "/user", {

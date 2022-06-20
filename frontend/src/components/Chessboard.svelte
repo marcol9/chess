@@ -13,6 +13,8 @@
     const checkSound = new Audio('sounds/check.mp3');
     const checkmateSound = new Audio('sounds/checkmate.mp3');
     const moveSound = new Audio('sounds/move.mp3');
+    const promotionSound = new Audio('sounds/promotion.mp3');
+    const errorSound  = new Audio('sounds/error.mp3');
 
 
     //Black pieces are lower case. White pieces are upper case
@@ -108,7 +110,7 @@
       data.to = null;
       if(moveResponse.message === undefined){
         handleVisualisation(moveResponse);
-      }
+      }else{errorSound.play()}
     }
 
     function handleVisualisation(move){
@@ -155,6 +157,7 @@
                     postion[to.y][to.x] = (move.color === 'b') ? b : B;
                     break;
             }
+            finalSoundEffect = promotionSound;
         }
         
         if(move.flags.includes('k')){
