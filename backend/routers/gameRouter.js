@@ -7,7 +7,7 @@ const chess = new Chess();
 
 router.post("/move", async(req,res)=>{
     const move = chess.move(req.body)
-    console.log(chess.ascii());
+    // console.log(chess.ascii());
     if(move===null){
         res.send({message:"Invalid move"});
         return

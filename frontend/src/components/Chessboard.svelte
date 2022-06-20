@@ -40,6 +40,7 @@
     //TODO: FIX IT SO THAT IT FETCHES POSTION FROM BACKEND SO THAT IT DOESNT BREAK ON REFREASH
     //FOR FUCKS SAKE. THIS IS GONNA BE SO ANNOYING.
     //ALSO WE WOULD NEED SOME MATRIX FLIP FOR BLACK PIECES
+    //FIND ALTERNATIVE WAY OF PRESISTING POSITION ON REFREASH. MAYBE STORAGE.
     onMount(()=>{
         //Grandmaster Hikaru Nakamura calls "free" pieces (ones that can be taken without consequences) juicers. 
         //Im gonna call all major pieces that way here (every kind of piece but pawn).
