@@ -21,7 +21,8 @@ router.post("/move", async(req,res)=>{
         inDraw: chess.in_draw(),
         inThreeFoldRep: chess.in_threefold_repetition(),
         insMaterial: chess.insufficient_material(),
-        flags: move.flags
+        flags: move.flags,
+        color: move.color
     }
     res.send(response);
 });
