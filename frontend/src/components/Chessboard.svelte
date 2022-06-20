@@ -183,6 +183,7 @@
     }
 
 </script>
+<div class="chessboard">
 
 <div class="board">
 {#each Array(8) as _, index (index)}
@@ -216,6 +217,7 @@
       </div>
     {/each}
   </div>
+</div>
 
 <div class="promotion container">
     <label for="promotion">Promotion:</label>
@@ -229,8 +231,16 @@
 
 
 <style>
+
+    .chessboard{
+        width: 700px;
+        height: 600px;
+        position: relative;
+
+    }
     
     .board{
+        position: absolute;
         min-width: 700px;
         min-height: 600px;
         margin-left: 25%;
@@ -238,6 +248,7 @@
 
     }
     .visualisation{
+        position: absolute;
         -moz-user-select: -moz-none;
         -khtml-user-select: none;
         -webkit-user-select: none;
@@ -246,7 +257,7 @@
         pointer-events: none;
         min-width: 700px;
         min-height: 600px;
-        margin-left: 25%;
+        margin-left: 27%;
     }
 
     .letters{
