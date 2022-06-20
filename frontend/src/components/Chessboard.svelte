@@ -11,6 +11,7 @@
   // Get the value of "some_key" in eg "https://example.com/?some_key=some_value"
   let gameId = params.token; // "some_value"
   let color = params.color;
+  let isYourTurn = color === 'W';
 
   import io from "socket.io-client";
   const socket = io("http://localhost:4000");
@@ -19,6 +20,7 @@
   socket.on("receive-move", (response) => {
     console.log("received move: " + JSON.stringify(response));
     handleVisualisation(response);
+    isYourTurn = !isYourTurn;
   });
 
   let columns = [];
@@ -115,6 +117,7 @@
   }
 
   async function handleMove(move) {
+    if(!isYourTurn){ return}
     if (data.from === null) {
       data.from = move;
       return;
@@ -140,6 +143,7 @@
     if (moveResponse.message === undefined) {
       handleVisualisation(moveResponse);
       socket.emit("move", moveResponse, gameId);
+      isYourTurn = !isYourTurn;
     } else {
       errorSound.play();
     }

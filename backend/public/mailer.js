@@ -14,7 +14,7 @@ export async function mailer(email, subject, text, html) {
 
   // send mail with defined transport object
   let info = await transporter.sendMail({
-    from: '"Chess" <mare1515@stud.kea.dk>', // sender address
+    from: '"Chess" <'+process.env.EMAIL+'>', // sender address
     to: email, // list of receivers
     subject: subject, // Subject line
     text: text, // plain text body
