@@ -1,12 +1,13 @@
 <script>
     import { apiurl,} from "../constants/apiurl.js";
+    import {savedPosition} from "../store/loggedin.js";
     import { onMount } from "svelte";
     import toastr from "../components/toastrConfig.js";
     let data = {from:null,to:null,promotion:"q"}
     export let color;
     let columns = [];
     let step;
-    const postion = new Array(8).fill().map(()=>Array(8).fill());
+    let postion = new Array(8).fill().map(()=>Array(8).fill());
 
     //Initializing sound effects;
     const captureSound = new Audio('sounds/capture.mp3');
@@ -42,6 +43,25 @@
     //ALSO WE WOULD NEED SOME MATRIX FLIP FOR BLACK PIECES
     //FIND ALTERNATIVE WAY OF PRESISTING POSITION ON REFREASH. MAYBE STORAGE.
     onMount(()=>{
+        if(color === 'W'){
+           columns = ['a','b','c','d','e','f','g','h'];
+           step = 8;
+        }
+        if(color === 'B'){
+            columns = ['h','g','f','e','d','c','b','a'];
+            step = -1;
+        }
+        if($savedPosition.length===0){
+            generateStartingPosition();
+            savedPosition.set(postion);
+            console.log($savedPosition);
+        }else{
+            postion = $savedPosition;
+        }
+    });
+
+
+    function generateStartingPosition(){        
         //Grandmaster Hikaru Nakamura calls "free" pieces (ones that can be taken without consequences) juicers. 
         //Im gonna call all major pieces that way here (every kind of piece but pawn).
 
@@ -49,8 +69,6 @@
         const opponentsJuicers = postion[0];
 
         if(color === 'W'){
-           columns = ['a','b','c','d','e','f','g','h'];
-           step = 8;
 
            yourJuicers[0] = yourJuicers[7] = R;
            yourJuicers[1] = yourJuicers[6] = N;
@@ -65,8 +83,6 @@
            opponentsJuicers[4] = k;
         }
         if(color === 'B'){
-            columns = ['h','g','f','e','d','c','b','a'];
-            step = -1;
 
            yourJuicers[0] = yourJuicers[7] = r;
            yourJuicers[1] = yourJuicers[6] = n;
@@ -89,8 +105,8 @@
 
         //I have to update the variable postion somehow so that svelte sees it and updates it.
         postion=postion;
-    });
-
+        
+    }
 
     async function handleMove(move){
         if(data.from===null){
@@ -193,21 +209,25 @@
 
         if(move.inCheck){finalSoundEffect = checkSound;}
 
-        //handle draws/checkmates
         if(move.inCheckmate){
+            savedPosition.set([]);
             const winner = (move.color === 'b') ? 'Black':'White';
-            finalSoundEffect = checkmateSound;
             toastr["success"](winner+" side has won.");
+            checkmateSound.play();
+            return;
         }
 
         if(move.inDraw){
+            savedPosition.set([]);
             if(move.inStalemate){toastr["success"]("There has been a draw due to stalemate");}
             if(move.insMaterial){toastr["success"]("There has been a draw due to insufitient material");}
-            if(move.inThreeFoldRep){toastr["success"]("There has been a draw due to three fold repetiton");}    
+            if(move.inThreeFoldRep){toastr["success"]("There has been a draw due to three fold repetiton");}
+            return;   
         }
 
         finalSoundEffect.play();
         postion = postion;
+        savedPosition.set(postion);
     }
 
     function getColor(x,y){
