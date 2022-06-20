@@ -1,6 +1,7 @@
 <script>
     import { apiurl,} from "../constants/apiurl.js";
     import { onMount } from "svelte";
+    import toastr from "../components/toastrConfig.js";
     let data = {from:null,to:null,promotion:"q"}
     export let color;
     let columns = [];
@@ -192,8 +193,15 @@
 
         //handle draws/checkmates
         if(move.inCheckmate){
-
+            const winner = (move.color === 'b') ? 'Black':'White';
             finalSoundEffect = checkmateSound;
+            toastr["success"](winner+" side has won.");
+        }
+
+        if(move.inDraw){
+            if(move.inStalemate){toastr["success"]("There has been a draw due to stalemate");}
+            if(move.insMaterial){toastr["success"]("There has been a draw due to insufitient material");}
+            if(move.inThreeFoldRep){toastr["success"]("There has been a draw due to three fold repetiton");}    
         }
 
         finalSoundEffect.play();
@@ -329,8 +337,6 @@
         width: 75px;
         height: 75px;
     }
-
-
 
     .black{
         background-color:#769656;
