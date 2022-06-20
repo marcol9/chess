@@ -6,6 +6,8 @@
   import Register from "../pages/Register.svelte";
   import ResetPassEmail from "../pages/ResetPassEmail.svelte";
   import ResetPassword from "../pages/ResetPassword.svelte";
+  import NewGame from "../pages/NewGame.svelte";
+  import Game from "../pages/Game.svelte";
 
   export let role;
   export let username;
@@ -46,36 +48,21 @@
                 <img src="logo.png" alt="" width="60" height="66" />
               </Link>
             </li>
-            {#if role == "admin"}
-              <li class="nav-item dropdown  text-link">
-                <a class="nav-link dropdown-toggle" id="dropdown09" data-bs-toggle="dropdown" aria-expanded="false">Manage items</a>
-                <ul class="dropdown-menu" aria-labelledby="dropdown09">
-                  <li><Link to="/admin/add-item"><a class="dropdown-item" href="/admin/add-item">Admin item 1</a></Link></li>
-                  <li><Link to="/admin/view-items"><a class="dropdown-item" href="/admin/view-items">Admin item 2</a></Link></li>
-                </ul>
-              </li>
 
-              <li class="nav-item  text-link">
-                <Link to="/admin/manage-orders">
-                  <a class="nav-link" href="/admin/manage-orders">item 1</a>
-                </Link>
-              </li>
-            {:else}
-              <li class="nav-item text-link">
-                <Link to="/view-items-category?category=pcs-and-laptops">
-                  <a class="nav-link" href="/view-items-category">item 2</a>
-                </Link>
-              </li>
-              <li class="nav-item  text-link">
-                <a class="nav-link" href="/rest">item 3</a>
-              </li>
-              <li class="nav-item  text-link">
-                <a class="nav-link" href="/ssr">item 4</a>
-              </li>
-              <li class="nav-item  text-link">
-                <a class="nav-link" href="/ssr">item 5</a>
-              </li>
-            {/if}
+            <li class="nav-item text-link">
+              <Link to="/new-game">
+                <a class="nav-link" href="/new-game">Start new game</a>
+              </Link>
+            </li>
+            <li class="nav-item  text-link">
+              <a class="nav-link" href="/rest">item 3</a>
+            </li>
+            <li class="nav-item  text-link">
+              <a class="nav-link" href="/ssr">item 4</a>
+            </li>
+            <li class="nav-item  text-link">
+              <a class="nav-link" href="/ssr">item 5</a>
+            </li>
           </ul>
 
           {#if auth == true}
@@ -99,6 +86,8 @@
   <Route path="/register" component={Register} />
   <Route path="/resetpassemail" component={ResetPassEmail} />
   <Route path="/reset-password" component={ResetPassword} />
+  <Route path="/new-game" component={NewGame} />
+  <Route path="/game" component={Game} />
 </Router>
 
 <style>

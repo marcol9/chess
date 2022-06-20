@@ -1,14 +1,12 @@
 <script>
   import { onMount } from "svelte";
-  import NavBar from "./components/NavBar.svelte";
-  import Chessboard from "./components/Chessboard.svelte";
-  import { apiurl } from "./constants/apiurl";
-  import { loggedin } from "./store/loggedin";
+  import { apiurl } from "../constants/apiurl";
+  import { navigate } from "svelte-navigator";
+  import { loggedin } from "../store/loggedin";
 
   let username = "";
   let role = "";
   let ok = false;
-  let color = "W";
 
   onMount(() => {
     fetch(apiurl + "/user", {
@@ -28,14 +26,14 @@
           const content = resJson;
           username = content.username;
           role = content.role;
+
           loggedin.set(true);
         } else {
           loggedin.set(false);
+          if (role !== "admin" || "user") {
+            navigate("/login");
+          }
         }
       });
   });
 </script>
-
-<main>
-  <NavBar {username} {role} />
-</main>

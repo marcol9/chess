@@ -17,7 +17,7 @@ import cors from "cors";
 app.use(
   cors({
     credentials: true,
-    origin: ["http://localhost:4000", "http://localhost:8080"],
+    origin: ["http://localhost:4000", "http://localhost:8080", "http://localhost:3000"],
   })
 );
 
@@ -42,10 +42,9 @@ import authRouter from "./routers/authRouter.js"; // login/signup router
 app.use(authRouter);
 
 import gameRouter from "./routers/gameRouter.js";
-app.use(gameRouter)
+app.use(gameRouter);
 
 import { authenticateUser, checkIfAdmin } from "./public/auth.js"; //auth functions
-
 
 app.listen(3000, () => {
   console.log("Server is running on: ", 3000);
