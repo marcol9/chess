@@ -112,7 +112,6 @@
     }
 
     function handleVisualisation(move){
-        //castling
         //ending (checkmate and draw)
 
         const multiplyer = (color=== 'B') ? 1 : -1;
@@ -159,10 +158,31 @@
         }
         
         if(move.flags.includes('k')){
-
+            switch(color) {
+                case 'W':
+                    postion[to.y][7]=undefined;
+                    postion[to.y][5]=(move.color === 'b') ? r : R;
+                    break;
+                case 'B':
+                    postion[to.y][0]=undefined;
+                    postion[to.y][2]=(move.color === 'b') ? r : R;
+                    break;
+                }
+            finalSoundEffect = castleSound;
         }
         if(move.flags.includes('q')){
-            
+            switch(color) {
+                case 'W':
+                    postion[to.y][0]=undefined;
+                    postion[to.y][3]=(move.color === 'b') ? r : R;
+                    break;
+                case 'B':
+                    postion[to.y][7]=undefined;
+                    postion[to.y][4]=(move.color === 'b') ? r : R;
+                    break;
+                }
+
+            finalSoundEffect = castleSound;
         }
 
         if(move.inCheck){finalSoundEffect = checkSound;}
@@ -218,6 +238,11 @@
     {/each}
   </div>
 </div>
+
+<!-- temporary breaks TODO:fix with css move promotion container to the right -->
+<br>
+<br>
+<br>
 
 <div class="promotion container">
     <label for="promotion">Promotion:</label>
