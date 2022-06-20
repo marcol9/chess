@@ -38,10 +38,6 @@
     const Q = start+"Wqueen.png"
     const R = start+"Wrook.png";
     
-    //TODO: FIX IT SO THAT IT FETCHES POSTION FROM BACKEND SO THAT IT DOESNT BREAK ON REFREASH
-    //FOR FUCKS SAKE. THIS IS GONNA BE SO ANNOYING.
-    //ALSO WE WOULD NEED SOME MATRIX FLIP FOR BLACK PIECES
-    //FIND ALTERNATIVE WAY OF PRESISTING POSITION ON REFREASH. MAYBE STORAGE.
     onMount(()=>{
         if(color === 'W'){
            columns = ['a','b','c','d','e','f','g','h'];
@@ -235,6 +231,11 @@
         return "black"
     }
 
+    //FOR TESTING PURPOSEES ONLY DELTE
+    function clear(){
+        $savedPosition = [];
+    }
+
 </script>
 <div class="chessboard">
 
@@ -260,7 +261,7 @@
       <div class='row'>
         {#each row as square}
           <div class='visual-square'>
-            {#if square===undefined}
+            {#if (square===undefined) || (square === null)}
             <img class="visual-piece" src={t} alt="">
             {:else}
             <img class="visual-piece" src={square} alt="">
@@ -272,7 +273,11 @@
   </div>
 </div>
 
-<!-- temporary breaks TODO:fix with css move promotion container to the right -->
+<!-- temporary break to position the promotion container TODO:fix with css move promotion container 
+    to the right of the chess board. Also stylize it a bit. Move the board 
+    (Remember to keep the visualization and board on top of each other)
+    Unfortunatly the visualization is slightly offset since the board has those numbers on the left
+    so keep that in mind -->
 <br>
 
 <div class="promotion container">
@@ -284,6 +289,9 @@
         <option value="b">♗ Bishop</option>
     </select>
 </div>
+
+<!-- for testing purposes only -->
+<button on:click = {()=>clear()}>Clear</button>
 
 
 <style>
