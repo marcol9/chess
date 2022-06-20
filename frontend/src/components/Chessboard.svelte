@@ -222,7 +222,7 @@
     <div class="row"> 
     {Math.abs(step-index)}{" _"}
     {#each columns as letter, i}
-        <div class = "square {getColor(index, i)}" on:click={() => handleMove(letter+Math.abs(step-index))}>
+        <div class = "square {getColor(index, i)}" tabindex = 0 on:click={() => handleMove(letter+Math.abs(step-index))}>
         </div>
     {/each}
     </div>
@@ -252,8 +252,6 @@
 </div>
 
 <!-- temporary breaks TODO:fix with css move promotion container to the right -->
-<br>
-<br>
 <br>
 
 <div class="promotion container">
@@ -329,6 +327,7 @@
         width: 75px;
         height: 75px;
     }
+
     .visual-square{
         width: 75px;
         height: 75px;
@@ -346,7 +345,11 @@
         background-color: #eeeed2;
     }
     .square:hover {
-        background-color: rgba(163, 6, 6, 0.6);
+        background-color: rgba(163, 6, 6, 0.47);
     }
+    .square:focus{
+        background-color: rgba(163, 6, 6, 0.701);
+
+}
 
 </style>
