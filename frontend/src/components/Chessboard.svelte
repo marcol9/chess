@@ -178,6 +178,7 @@
     if (move.flags.includes("e")) {
       const enPassantDirection = move.color.toUpperCase() === color ? 1 : -1;
       postion[to.y + enPassantDirection][to.x] = undefined;
+      postion = postion;
       finalSoundEffect = captureSound;
     }
 
@@ -200,6 +201,7 @@
           postion[to.y][to.x] = move.color === "b" ? b : B;
           break;
       }
+      postion = postion;
       finalSoundEffect = promotionSound;
     }
 
@@ -214,6 +216,7 @@
           postion[to.y][2] = move.color === "b" ? r : R;
           break;
       }
+      postion = postion;
       finalSoundEffect = castleSound;
     }
     if (move.flags.includes("q")) {
@@ -227,7 +230,7 @@
           postion[to.y][4] = move.color === "b" ? r : R;
           break;
       }
-
+      postion = postion;
       finalSoundEffect = castleSound;
     }
 
