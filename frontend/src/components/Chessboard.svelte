@@ -11,7 +11,8 @@
   // Get the value of "some_key" in eg "https://example.com/?some_key=some_value"
   let gameId = params.token; // "some_value"
   let color = params.color;
-  let isYourTurn = color === 'W';
+  let isYourTurn = color === "W";
+  let isGameOverByDecision = false;
 
   import io from "socket.io-client";
   const socket = io("http://localhost:4000");
@@ -21,6 +22,11 @@
     console.log("received move: " + JSON.stringify(response));
     handleVisualisation(response);
     isYourTurn = !isYourTurn;
+  });
+  socket.on("opponent-resigned", (winner) => {
+    isGameOverByDecision = true
+    resignSound.play();
+    toastr["success"](winner + " has won by resignation");
   });
 
   let columns = [];
@@ -35,6 +41,7 @@
   const moveSound = new Audio("sounds/move.mp3");
   const promotionSound = new Audio("sounds/promotion.mp3");
   const errorSound = new Audio("sounds/error.mp3");
+  const resignSound = new Audio("sounds/resign.mp3");
 
   //Black pieces are lower case. White pieces are upper case
   const start = "chess_pieces/";
@@ -117,7 +124,9 @@
   }
 
   async function handleMove(move) {
-    if(!isYourTurn){ return}
+    if (!isYourTurn) {
+      return;
+    }
     if (data.from === null) {
       data.from = move;
       return;
@@ -177,7 +186,6 @@
     }
 
     if (move.flags.includes("p")) {
-      console.log(move)
       switch (move.promotion) {
         case "q":
           postion[to.y][to.x] = move.color === "b" ? q : Q;
@@ -230,7 +238,7 @@
     if (move.inCheckmate) {
       savedPosition.set([]);
       const winner = move.color === "b" ? "Black" : "White";
-      toastr["success"](winner + " side has won.");
+      toastr["success"](winner + "has won by checkmate.");
       checkmateSound.play();
       return;
     }
@@ -261,73 +269,95 @@
     return "black";
   }
 
+  function resign() {
+    if(isGameOverByDecision){return;}
+    const winner = color === "B" ? "White" : "Black";
+    socket.emit("resign", winner, gameId);
+    resignSound.play();
+    toastr["success"](winner + " has won by resignation");
+  }
+
   //FOR TESTING PURPOSEES ONLY DELTE
   function clear() {
     $savedPosition = [];
   }
 </script>
 
-<div class="chessboard">
-  <div class="board">
-    {#each Array(8) as _, index (index)}
-      <div class="row">
-        {Math.abs(step - index)}{" _"}
-        {#each columns as letter, i}
-          <div class="square {getColor(index, i)}" tabindex="0" on:click={() => handleMove(letter + Math.abs(step - index))} />
+<div class="game">
+
+  <div class="chessboard">
+    <div class="board">
+      {#each Array(8) as _, index (index)}
+        <div class="row">
+          {Math.abs(step - index)}{" _"}
+          {#each columns as letter, i}
+            <div
+              class="square {getColor(index, i)}"
+              tabindex="0"
+              on:click={() => handleMove(letter + Math.abs(step - index))}
+            />
+          {/each}
+        </div>
+      {/each}
+      <div class="letters">
+        {#each columns as letter}
+          <div class="letter">{letter}</div>
         {/each}
       </div>
-    {/each}
-    <div class="letters">
-      {#each columns as letter}
-        <div class="letter">{letter}</div>
+    </div>
+
+    <div class="visualisation">
+      {#each postion as row}
+        <div class="row">
+          {#each row as square}
+            <div class="visual-square">
+              {#if square === undefined || square === null}
+                <img class="visual-piece" src={t} alt="" />
+              {:else}
+                <img class="visual-piece" src={square} alt="" />
+              {/if}
+            </div>
+          {/each}
+        </div>
       {/each}
     </div>
   </div>
 
-  <div class="visualisation">
-    {#each postion as row}
-      <div class="row">
-        {#each row as square}
-          <div class="visual-square">
-            {#if square === undefined || square === null}
-              <img class="visual-piece" src={t} alt="" />
-            {:else}
-              <img class="visual-piece" src={square} alt="" />
-            {/if}
-          </div>
-        {/each}
-      </div>
-    {/each}
+  <div class="options">
+    <div class="promotion container">
+      <label for="promotion">Promotion:</label>
+      <select id="promotion" bind:value={data.promotion}>
+        <option value="q">♕ Queen</option>
+        <option value="n">♘ Knight</option>
+        <option value="r">♖ Rook</option>
+        <option value="b">♗ Bishop</option>
+      </select>
+    </div>
+
+    <div class="options-buttons">
+      <!-- for testing purposes only -->
+      <button on:click={() => clear()}>Clear</button>
+
+      <button on:click|once={resign}>Resign</button>
+      <button>Offer Draw</button>
+    </div>
   </div>
 </div>
-
-<!-- temporary break to position the promotion container TODO:fix with css move promotion container 
-    to the right of the chess board. Also stylize it a bit. Move the board 
-    (Remember to keep the visualization and board on top of each other)
-    Unfortunatly the visualization is slightly offset since the board has those numbers on the left
-    so keep that in mind -->
-<br />
-
-<div class="promotion container">
-  <label for="promotion">Promotion:</label>
-  <select id="promotion" bind:value={data.promotion}>
-    <option value="q">♕ Queen</option>
-    <option value="n">♘ Knight</option>
-    <option value="r">♖ Rook</option>
-    <option value="b">♗ Bishop</option>
-  </select>
-</div>
-
-<!-- for testing purposes only -->
-<button on:click={() => clear()}>Clear</button>
 
 <style>
   .chessboard {
     width: 700px;
     height: 600px;
     position: relative;
+    margin-left: 10%;
   }
 
+  .options {
+    /* margin-left: 700px;
+    margin-top: -350px; */
+    margin-top: 30px;
+  }
+  
   .board {
     position: absolute;
     min-width: 700px;

@@ -20,6 +20,11 @@ io.on("connection", (socket) => {
   socket.on("join-game", (gameId) => {
     socket.join(gameId);
   });
+  socket.on("resign", (winner,room)=>{
+    if(chess.game_over()){return}
+    chess.load('4k3/4P3/4K3/8/8/8/8/8 b - - 0 78');
+    socket.to(room).emit("opponent-resigned", winner)
+  })
 });
 server.listen(4000);
 
@@ -28,15 +33,15 @@ const chess = new Chess();
 router.post("/invite", async (req, res) => {
   const token = nanoid(); //=> "V1StGXR8_Z5jdHi6B-myT"
   const email = req.body.email;
-  mailer(
-    email,
-    "Your chess invite",
-    "",
-    '<p>You have been invited to the chess game, kindly use this <a href="http://localhost:8080/game?token=' +
-      token +
-      "&color=B" +
-      '">link</a> to enter the game</p>'
-  );
+  // mailer(
+  //   email,
+  //   "Your chess invite",
+  //   "",
+  //   '<p>You have been invited to the chess game, kindly use this <a href="http://localhost:8080/game?token=' +
+  //     token +
+  //     "&color=B" +
+  //     '">link</a> to enter the game</p>'
+  // );
   res.status(201).send({ link: "http://localhost:8080/game?token=" + token + "&color=W" });
 });
 
