@@ -27,6 +27,7 @@
     isGameOverByDecision = true
     resignSound.play();
     toastr["success"](winner + " has won by resignation");
+    $savedPosition = [];
   });
 
   let columns = [];
@@ -278,6 +279,7 @@
     socket.emit("resign", winner, gameId);
     resignSound.play();
     toastr["success"](winner + " has won by resignation");
+    $savedPosition = [];
   }
 
   //FOR TESTING PURPOSEES ONLY DELTE
