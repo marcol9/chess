@@ -177,7 +177,8 @@
     }
 
     if (move.flags.includes("p")) {
-      switch (data.promotion) {
+      console.log(move)
+      switch (move.promotion) {
         case "q":
           postion[to.y][to.x] = move.color === "b" ? q : Q;
           break;

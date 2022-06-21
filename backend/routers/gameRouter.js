@@ -58,6 +58,7 @@ router.post("/move", async (req, res) => {
     insMaterial: chess.insufficient_material(),
     flags: move.flags,
     color: move.color,
+    promotion: move.promotion
   };
   res.send(response);
 });
