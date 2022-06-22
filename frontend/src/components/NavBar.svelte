@@ -9,7 +9,6 @@
   import NewGame from "../pages/NewGame.svelte";
   import Game from "../pages/Game.svelte";
 
-  export let role;
   export let username;
 
   let auth = false;
@@ -54,15 +53,6 @@
                 <a class="nav-link" href="/new-game">Start new game</a>
               </Link>
             </li>
-            <li class="nav-item  text-link">
-              <a class="nav-link" href="/rest">item 3</a>
-            </li>
-            <li class="nav-item  text-link">
-              <a class="nav-link" href="/ssr">item 4</a>
-            </li>
-            <li class="nav-item  text-link">
-              <a class="nav-link" href="/ssr">item 5</a>
-            </li>
           </ul>
 
           {#if auth == true}
@@ -104,9 +94,7 @@
     text-decoration: none;
   }
   .nav-link,
-  .dropdown-item {
-    color: rgba(0, 0, 0, 0.55);
-  }
+
   .text-link:hover {
     background-color: rgb(235, 235, 235);
   }

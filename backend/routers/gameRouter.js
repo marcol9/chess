@@ -47,7 +47,6 @@ router.post("/invite", async (req, res) => {
 
 router.post("/move", async (req, res) => {
   const move = chess.move(req.body);
-  console.log(chess.ascii());
   if (move === null) {
     res.send({ message: "Invalid move" });
     return;
@@ -67,7 +66,5 @@ router.post("/move", async (req, res) => {
   };
   res.send(response);
 });
-
-router.get("/current");
 
 export default router;

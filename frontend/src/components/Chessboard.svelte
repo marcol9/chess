@@ -19,7 +19,6 @@
 
   socket.emit("join-game", gameId);
   socket.on("receive-move", (response) => {
-    console.log("received move: " + JSON.stringify(response));
     handleVisualisation(response);
     isYourTurn = !isYourTurn;
   });
